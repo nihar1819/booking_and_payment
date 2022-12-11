@@ -1,6 +1,6 @@
 homepage: http://localhost/git/booking_and_payment/booking/booking-data.php
 for a working payment page we need to use link:
-https://www.assamjatriniwas.com/booking-data.php?room_id=1&msg=notavl
+http://localhost/git/booking/booking-data.php?room_id=1&msg=notavl
 
 here room_id is the avabilable room which we are going to book for the given date.
 
