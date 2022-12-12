@@ -101,7 +101,7 @@ ImageJPEG($destimg1,$destination_path1,100) or die("Problem In saving");
                       <div id="company-input-wrapper" class="controls col-sm-6">
                         <select name="type_id" id="type_id" class="width-60">
                         <?php foreach($dbf->fetch("room_type","id<>0") as $rt){ ?>
-                        <option value="<?php echo $rt[id]; ?>"><?php echo $rt[room_type]; ?></option>
+                        <option value="<?php echo $rt['id']; ?>"><?php echo $rt['room_type']; ?></option>
                         <?php } ?>
                         </select> 
                       </div>
