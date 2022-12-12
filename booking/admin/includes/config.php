@@ -2,13 +2,14 @@
 
 /*if($_SERVER['REMOTE_ADDR']=="127.0.0.1")
  {*/ 
-
  define('DB_SERVER', 'localhost');  
  //define('DB_USERNAME', 'assamjat_new');
- #define('DB_PASSWORD', 'jatrinew@123~');
+ //define('DB_PASSWORD', 'jatrinew@123~');
+//  define('DB_USERNAME', 'demo@demo.com');
+//  define('DB_PASSWORD', 'demo');
  define('DB_DATABASE', 'assamjat_new');  
  
- //define('DB_SERVER', 'localhost');  
+ define('DB_SERVER', 'localhost');  
  define('DB_USERNAME', 'root');
  define('DB_PASSWORD', '');
  //define('DB_DATABASE', 'hotel'); 
@@ -44,11 +45,9 @@ class DB_Class
 {
 	function __construct()
 	{
-		echo "hi";
 		$connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD,DB_DATABASE) or die('Oops connection error -> ' . mysqli_connect_error());
 	}
 }
-
 
 
 /**********************General WebSite Settings************************************/
@@ -56,4 +55,4 @@ class DB_Class
 //define('DATE_TIME_FORMAT', 'd-M-Y, h:i a');
 date_default_timezone_set("UTC");
 ?>
-<?php #ini_set("display_errors",0);?>
+<?php ini_set("display_errors",0);?>

@@ -4,7 +4,11 @@ class Dbfunctions extends Pagination
 {
 	public $dbcon;	
 	//Database connect 
+	
 	public function __construct(){		
+		// echo "<br><br><br><br>";
+		// echo DB_SERVER,',', DB_USERNAME,',', DB_PASSWORD, ',',DB_DATABASE;
+		// echo "<br><br><br><br>";
 		$this->dbcon = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD,DB_DATABASE) or die('Oops connection error -> ' . mysqli_connect_error());								
 	}
 
@@ -418,7 +422,10 @@ public function getDataFromTable($tblName, $fldName,$optCondition){
 			$sql="SELECT * FROM " . $tblName . $condition;
 		}
 	    //echo $sql;//exit;
-		$result = mysqli_query($this->dbcon,$sql);		
+		$result = mysqli_query($this->dbcon,$sql);
+		// while ($row = $result -> fetch_row()) {
+		// 	printf ("%s (%s)\n", $row[0], $row[1]);
+		//   }
 		return $result->num_rows;
 	}
 
