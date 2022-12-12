@@ -2,7 +2,7 @@
 
 /*if($_SERVER['REMOTE_ADDR']=="127.0.0.1")
  {*/ 
- define('DB_SERVER', 'localhost');  
+ //define('DB_SERVER', 'localhost');  
  //define('DB_USERNAME', 'assamjat_new');
  //define('DB_PASSWORD', 'jatrinew@123~');
 //  define('DB_USERNAME', 'demo@demo.com');
