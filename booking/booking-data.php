@@ -119,7 +119,7 @@ if(isset($_REQUEST['action']) && $_REQUEST['action']=='book')
  catch(Exception $e){
     echo "error $e";
  }
-echo "hello 7";
+
 header("Location:pay.php?book_id=$id");
 }else{
 	header("Location:booking-data.php?room_id=$_REQUEST[room_id]&msg=notavl");

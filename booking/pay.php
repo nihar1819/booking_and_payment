@@ -195,8 +195,6 @@ label.btn.paymentMethod.right {
                 $html='';
                 
                 if(strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') == 0){
-                //if(isset($_POST['btnsubmit'])){
-                    
                     
                     /* Request Hash
                     ----------------
@@ -286,12 +284,12 @@ label.btn.paymentMethod.right {
                 <tr>
                 <td style="text-align:center;">
                 
-                <form action="" id="payment_form" method="post">
+                <form action="pay.php" id="payment_form" method="post">
                         <!-- Note that the amount is in paise = 50 INR -->
                         <input type="hidden" id="udf5" name="udf5" value="PayUBiz_PHP7_Kit" />
                         <input type="hidden" value="<?php echo  "Txn" . rand(10000,99999999)?>" name="transactionId" id="transactionId">
                         <input type="hidden" value="<?php echo $order_id;?>" name="order_id" id="order_id">
-                        <input type="hidden" name="product_price" value="<?php $tot*100;?>"> 
+                        <input type="hidden" name="product_price" value="<?php echo $tot;?>"> 
                         <input type="hidden" name="productinfo" value="booking of room"> 
                         <input type="hidden" class="form-control" name="name" value="<?php echo $name; ?>">
                         <input type="hidden" class="form-control" name="phone"  value="<?php echo $phone; ?>">		
