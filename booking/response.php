@@ -239,8 +239,8 @@ function verifyPayment($key,$salt,$txnid,$status)
     </div>
     
     <div class="dv">
-    <span class="text"><label>Hash:</label></span>
-    <span><?php echo $resphash; ?></span>
+    <!-- <span class="text"><label>Hash:</label></span>
+    <span><?php echo $resphash; ?></span> -->
     </div>
     
     <div class="dv">
@@ -256,7 +256,7 @@ function verifyPayment($key,$salt,$txnid,$status)
     <br />
     <br />
     <div class="dv">
-    <span class="text"><label><a href="./">New Order</a></label></span>    
+    <span class="text"><label><a href="./">Home</a></label></span>    
     </div>
     
 	<!-- Response Parameters 
