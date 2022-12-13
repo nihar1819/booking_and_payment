@@ -242,7 +242,7 @@ label.btn.paymentMethod.right {
                             <input type="hidden" id="email" name="email" value="'.$_POST['email'].'" />
                             <input type="hidden" id="phone" name="phone" value="'.$_POST['phone'].'" />
                             
-                            <input type="hidden" id="Pg" name="Pg" value="'.$_POST['Pg'].'" />
+                            
                             <input type="hidden" id="hash" name="hash" value="'.$hash.'" />
                             </form>
                             <script type="text/javascript"><!--
