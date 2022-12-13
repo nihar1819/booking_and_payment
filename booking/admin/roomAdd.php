@@ -6,6 +6,7 @@ include_once 'application-top.php';
 $dbf = new User();
 
 if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'addCountry') {
+  echo "hello";
   if ($_FILES['img']['name'] != '' && (($_FILES['img']['type'] == "image/gif") || ($_FILES['img']['type'] == "image/jpeg") || ($_FILES['img']['type'] == "image/pjpeg") || ($_FILES['img']['type'] == "image/png") || ($_FILES['img']['type'] == "image/bmp"))) {
 
     $fname1 = time() . "." . substr(strrchr($_FILES['img']['name'], "."), 1);

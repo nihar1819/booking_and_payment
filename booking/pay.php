@@ -2,7 +2,12 @@
 ob_start();
 session_start();
 include_once 'admin/includes/class.Main.php';
+try{
 $dbf = new User();
+}
+catch(Exception $e){
+
+}
 error_reporting(0);
 
 
@@ -179,59 +184,154 @@ label.btn.paymentMethod.right {
     border: 1px solid transparent;
     border-radius: 4px;
 }
-</style>
-									<table width="500" border="0" cellspacing="0" cellpadding="0" align="center" style="border:dashed 1px #666666;">
-                                      <tr>
-                                        <td style="text-align:center; font-weight:bold; font-size:36px; color:#2780AF;">ASSAM JATRI NIWAS</td>
-                                      </tr>
-                                      <tr>
-                                        <td style="text-align:center; font-weight:bold; font-size:14px; color:#2780AF;">&nbsp;</td>
-                                      </tr>
-                                      <tr>
-                                        <td style="text-align:center; font-weight:bold; font-size:14px; color:#2780AF;">Total Price : <?php echo number_format($tot,2); ?></td>
-                                      </tr>
-                                      <tr>
-                                        <td style="text-align:center; font-weight:bold; font-size:14px; color:#2780AF;">Adult : <?php echo number_format($val['adult'],2); ?> || Child : <?php echo number_format($val['children2'],2); ?></td>
-                                      </tr>
-                                       <tr>
-                                        <td style="text-align:center; font-weight:bold; font-size:14px; color:#2780AF;">Arrival : <?php echo date("d/m/Y",strtotime($val['ar_date'])); ?> || Depature : <?php echo date("d/m/Y",strtotime($val['dp_date'])); ?></td>
-                                      </tr>
-                                      <tr>
-                                        <td style="text-align:center;"><form id="razorpayform" action="success.php" method="POST">
-                                                <!-- Note that the amount is in paise = 50 INR -->
-                                                <script
-                                                        src="https://checkout.razorpay.com/v1/checkout.js"
-                                                        data-key="<?php echo "rzp_live_9mq8ZYE8S7er0S"; ?>"
-                                                        data-amount="<?php echo $tot*100; ?>"
-                                                        data-buttontext="Pay Online"
-                                                        data-name="ASSAM JATRI NIWAS"
-                                                        data-description="Order <?php echo $order_id;?>"
-                                                        data-image="img/logo/logo2.png"
-                                                        data-prefill.name="<?php echo $name; ?>"
-                                                        
-                                                        data-theme.color="#000000"
-                                                ></script>
-                                                <input type="hidden" value="<?php echo  "Txn" . rand(10000,99999999)?>" name="transactionId" id="transactionId">
-                                                <input type="hidden" value="<?php echo $order_id;?>" name="order_id" id="order_id">
-                                                <input type="hidden" name="product_price" value="<?php echo $tot*100;?>"> 
-                                                <input type="hidden" class="form-control" name="name" value="<?php echo $name; ?>">
-                                                <input type="hidden" class="form-control" name="phone"  value="<?php echo $phone; ?>">		
-                                                <input type="hidden" class="form-control" name="email" value="<?php echo $email;?>">
-                                                
-                                                </form></td>
-                                      </tr>
-                                      <tr>
-                                        <td style="text-align:center;">&copy; All Right Resereved. ASSAM JATRI NIWAS.</td>
-                                      </tr>
-                                    </table>
-                </div>
+</style>    
+            <?php
                 
-            </div>
-            <!-- End main content -->
-        </section>
-        <!-- End welcome section -->
+                $key="lH8IMH";
+                $salt="4tMkUnB19cra67xz4Ad4zBUQD9vYWnLQ";
+                
+                $action = 'https://test.payu.in/_payment';
+                
+                $html='';
+                
+                if(strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') == 0){
+                //if(isset($_POST['btnsubmit'])){
+                    
+                    
+                    /* Request Hash
+                    ----------------
+                    For hash calculation, you need to generate a string using certain parameters 
+                    and apply the sha512 algorithm on this string. Please note that you have to 
+                    use pipe (|) character as delimeter. 
+                    The parameter order is mentioned below:
+                    
+                    sha512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||SALT)
+                    
+                    Description of each parameter available on html page as well as in PDF.
+                    
+                    Case 1: If all the udf parameters (udf1-udf5) are posted by the merchant. Then,
+                    hash=sha512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||SALT)
+                    
+                    Case 2: If only some of the udf parameters are posted and others are not. For example, if udf2 and udf4 are posted and udf1, udf3, udf5 are not. Then,
+                    hash=sha512(key|txnid|amount|productinfo|firstname|email||udf2||udf4|||||||SALT)
+                
+                    Case 3: If NONE of the udf parameters (udf1-udf5) are posted. Then,
+                    hash=sha512(key|txnid|amount|productinfo|firstname|email|||||||||||SALT)
+                    
+                    In present kit and available PayU plugins UDF5 is used. So the order is -	
+                    hash=sha512(key|txnid|amount|productinfo|firstname|email|||||udf5||||||SALT)
+                    
+                    */
+                    //generate hash with mandatory parameters and udf5
+                    $hash=hash('sha512', $key.'|'.$_POST['transactionId'].'|'.$_POST['product_price'].'|'.$_POST['productinfo'].'|'.$_POST['name'].'|'.$_POST['email'].'|||||'.$_POST['udf5'].'||||||'.$salt);
+                        
+                    $_SESSION['salt'] = $salt; //save salt in session to use during Hash validation in response
+                    // echo $_SESSION['salt'], ' *** ',$_POST['name'],'  ',$_POST['email'],'  ',$_POST['phone'], '   ', $hash, '  ',$_POST['Pg'];
+                    // echo "<br>***<br>";
+                    // echo $_POST['product_price'];
 
+                    $html = '<form action="'.$action.'" id="payment_form_submit" method="post">
+                            <input type="hidden" id="udf5" name="udf5" value="'.$_POST['udf5'].'" />
+                            <input type="hidden" id="surl" name="surl" value="'.getCallbackUrl().'" />
+                            <input type="hidden" id="furl" name="furl" value="'.getCallbackUrl().'" />
+                            <input type="hidden" id="curl" name="curl" value="'.getCallbackUrl().'" />
+                            <input type="hidden" id="key" name="key" value="'.$key.'" />
+                            <input type="hidden" id="txnid" name="txnid" value="'.$_POST['transactionId'].'" />
+                            <input type="hidden" id="amount" name="amount" value="'.$_POST['product_price'].'" />
+                            <input type="hidden" id="productinfo" name="productinfo" value="'.$_POST['productinfo'].'" />
+                            <input type="hidden" id="firstname" name="firstname" value="'.$_POST['name'].'" />
+                            
+                            <input type="hidden" id="email" name="email" value="'.$_POST['email'].'" />
+                            <input type="hidden" id="phone" name="phone" value="'.$_POST['phone'].'" />
+                            
+                            <input type="hidden" id="Pg" name="Pg" value="'.$_POST['Pg'].'" />
+                            <input type="hidden" id="hash" name="hash" value="'.$hash.'" />
+                            </form>
+                            <script type="text/javascript"><!--
+                                document.getElementById("payment_form_submit").submit();	
+                            //-->
+                            </script>';
+                    
+                    
+                
+                }
 
+                //This function is for dynamically generating callback url to be postd to payment gateway. Payment response will be
+                //posted back to this url. 
+                function getCallbackUrl(){
 
-        <!-- Start Footer bottom section -->
-                  <?php include"footer.php"; ?>
+                    $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+                    $uri = str_replace('/pay.php','/',$_SERVER['REQUEST_URI']);
+                    return $protocol . $_SERVER['HTTP_HOST'] . $uri . '/response.php';
+                    }
+                
+                        
+            ?>
+            <table width="500" border="0" cellspacing="0" cellpadding="0" align="center" style="border:dashed 1px #666666;">
+                <tr>
+                <td style="text-align:center; font-weight:bold; font-size:36px; color:#2780AF;">ASSAM JATRI NIWAS</td>
+                </tr>
+                <tr>
+                <td style="text-align:center; font-weight:bold; font-size:14px; color:#2780AF;">&nbsp;</td>
+                </tr>
+                <tr>
+                <td style="text-align:center; font-weight:bold; font-size:14px; color:#2780AF;">Total Price : <?php echo number_format($tot,2); ?></td>
+                </tr>
+                <tr>
+                <td style="text-align:center; font-weight:bold; font-size:14px; color:#2780AF;">Adult : <?php echo number_format($val['adult'],2); ?> || Child : <?php echo number_format($val['children2'],2); ?></td>
+                </tr>
+                <tr>
+                <td style="text-align:center; font-weight:bold; font-size:14px; color:#2780AF;">Arrival : <?php echo date("d/m/Y",strtotime($val['ar_date'])); ?> || Depature : <?php echo date("d/m/Y",strtotime($val['dp_date'])); ?></td>
+                </tr>
+                <tr>
+                <td style="text-align:center;">
+                
+                <form action="" id="payment_form" method="post">
+                        <!-- Note that the amount is in paise = 50 INR -->
+                        <input type="hidden" id="udf5" name="udf5" value="PayUBiz_PHP7_Kit" />
+                        <input type="hidden" value="<?php echo  "Txn" . rand(10000,99999999)?>" name="transactionId" id="transactionId">
+                        <input type="hidden" value="<?php echo $order_id;?>" name="order_id" id="order_id">
+                        <input type="hidden" name="product_price" value="<?php $tot*100;?>"> 
+                        <input type="hidden" name="productinfo" value="booking of room"> 
+                        <input type="hidden" class="form-control" name="name" value="<?php echo $name; ?>">
+                        <input type="hidden" class="form-control" name="phone"  value="<?php echo $phone; ?>">		
+                        <input type="hidden" class="form-control" name="email" value="<?php echo $email; ?>">
+                        <input type="hidden" id="Pg" name="Pg" placeholder="PG" value="CC" /></span>
+                        <input type="button" id="btnsubmit" name="btnsubmit" value="Pay" onclick="frmsubmit(); return true;" />
+                        
+                </form>
+                
+                
+            </td>
+                </tr>
+                <tr>
+                <td style="text-align:center;">&copy; All Right Resereved. ASSAM JATRI NIWAS.</td>
+                </tr>
+                
+            </table>
+            <?php
+            if($html) echo $html; //submit request to PayUBiz  ?>
+            <!-- Below script makes final submission of form to Payment Gateway. This script is for present Demo/Test request 
+            form only. In case of live integration, other methods may be used for request form submission. Salt is confidential
+            so should not be passed over internet.//-->
+            <script type="text/javascript">		
+                <!--
+                function frmsubmit()
+                {
+                    
+                    document.getElementById("payment_form").submit();	
+                    return true;
+                }
+                //-->
+            </script>
+        </div>
+
+        
+                
+    </div>
+    <!-- End main content -->
+</section>
+<!-- End welcome section -->
+
+<!-- Start Footer bottom section -->
+<?php include"footer.php"; ?>
