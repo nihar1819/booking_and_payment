@@ -107,10 +107,14 @@ $val=$dbf->fetchSingle("rooms","*","id='$_REQUEST[id]'");
                   <div class="form-group">
                     <div class="col-md-12">
                       <label class="control-label  col-sm-2">Room Type<span class="vd_red">*</span></label>
+                      hello
                       <div id="company-input-wrapper" class="controls col-sm-6">
                         <select name="type_id" id="type_id" class="width-60">
-                        <?php foreach($dbf->fetch("room_type","id<>0") as $rt){ ?>
-                        <option value="<?php echo $rt['id']; ?>"<?php if($val['type_id']==$rt['id']){ echo "selected";}?>><?php echo $rt[room_type]; ?></option>
+                        <option value="id" f($val['type_id']==$rt['id']){ echo "selected";}?>><?php echo $rt['room_type']; ?></option>
+                        <?php 
+                        
+                        foreach($dbf->fetch("room_type","id<>0") as $rt){ ?>
+                        <option value="<?php echo $rt['id']; ?>" <?php if($val['type_id']==$rt['id']){ echo "selected";}?> > <?php echo $rt['room_type']; ?></option>
                         <?php } ?>
                         </select> 
                       </div>
@@ -123,7 +127,9 @@ $val=$dbf->fetchSingle("rooms","*","id='$_REQUEST[id]'");
                         
                         <?php 
 						foreach($dbf->fetch("room_facility","id<>0") as $fc){
-							$cnt_fac=$dbf->countRows("room_child","facility_id='$fc[id]' AND room_id='$_REQUEST[id]'");
+              $fc_id = $fc['id'];
+              $room_id = $_REQUEST['id'];
+							$cnt_fac=$dbf->countRows("room_child","facility_id='$fc_id' AND room_id='$room_id'");
 						 ?>
                        <input type="checkbox" name="facility_id[]" id="facility_id" value="<?php  echo $fc['id']; ?>"<?php if($cnt_fac>0){ echo "checked";} ?>> &nbsp; <?php echo $fc['facility']; ?>&nbsp;
                         <?php } ?>
@@ -136,14 +142,14 @@ $val=$dbf->fetchSingle("rooms","*","id='$_REQUEST[id]'");
                       <label class="control-label  col-sm-2">Description <span class="vd_red">*</span></label>
                       <div id="company-input-wrapper" class="controls col-sm-6">
                         <textarea class="width-60" required="required" name="description" id="description" ><?php echo $val['description']; ?></textarea>
-                        <script type="text/javascript">
-							CKEDITOR.replace( 'description', {
-								extraPlugins : 'autogrow',
-								height : 200,
-								uiColor : 'green',
-								width : 500,
-							});
-						</script>
+                          <!-- <script type="text/javascript">
+                            CKEDITOR.replace( 'description', {
+                              extraPlugins : 'autogrow',
+                              height : 200,
+                              uiColor : 'green',
+                              width : 500,
+                            });
+                        </script> -->
                       </div>
                     </div>
                   </div>
