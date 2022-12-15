@@ -45,9 +45,11 @@ class DB_Class
 {
 	function __construct()
 	{
-		$connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD,DB_DATABASE) or die('Oops connection error -> ' . mysqli_connect_error());
+		$connection = mysqli_connect('localhost', 'root', '','assamjat_new') or die('Oops connection error -> ' . mysqli_connect_error());
 	}
 }
+
+// uG-g{AYs}dUa
 
 
 /**********************General WebSite Settings************************************/
